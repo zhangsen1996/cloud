@@ -1,0 +1,27 @@
+server:
+  port: 6001
+
+
+spring:
+  application:
+    name: cloud-gateyway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: CLOUD-MATCH-ROUTE #路由的ID
+          uri: lb://CLOUD-MATCH-SERVICE #匹配后路由地址
+          predicates: # 断言，路径相匹配的进行路由
+            - Path=/gameserver/get/{id}
+
+
+eureka:
+  instance:
+    instance-id: cloud-gateway6001
+  client: #服务提供者provider注册进eureka服务列表内
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://127.0.0.1:7001/eureka,http://127.0.0.1:7002/eureka
